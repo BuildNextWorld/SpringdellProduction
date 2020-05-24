@@ -1,0 +1,41 @@
+@model Springdell.Core.RazorModel
+@{
+// To Make Easily Accessible
+var S = Model.Service; var P = Model.PageData; var R = Model.Route;
+var U = Model.User; var UR = Model.Role; var HTTP = Model.Context;
+P.Title = "Springdell Default Homepage - BuildNextWorld";
+}
+<div class="container">
+<div class="row">
+  <div class="col-md-12">
+    <img src="/Themes/Springdell_default/images/combine-harvester.jpg" width="100%" />
+    <div class="jumbotron p-3 p-md-5 text-white rounded bg-dark" style="background: #ec111a !important;">
+        <div class="col-md-12 px-0">
+          <h1 class="display-4 font-italic">To those who work in acres and not in hours, <b>We Thankyou!</b></h1>
+          <p class="lead my-3">While farmers contribute to our survival, let us also do our part by showing them respect in form of not wasting food.</p>
+          
+        </div>
+      </div>
+  </div>
+        <div class="col-md-8 blog-main">
+          <h3 class="pb-3 mb-4 font-italic border-bottom">
+            From the Farmhouse
+          </h3>
+
+          <div class="blog-post" style="text-align:justify;">
+           Farming is a passion - devoted and honorable way of life. It is a Heritage and a legacy that connects one generation to the next and the force that feeds the world. Farming requires a strong mind, big heart, and profound patience to weather long hours, harsh conditions, and unpredictable prices/ There is a spiritual presence on the farm and in the land. Here, FAITH, COMMITMENT, and INTEGRITY provide strength for the unwavering labor that is the foundation of life itself. It is where roots run as deep in the house as they do in the field - where FAMILIES are bound strong because of shared experiences, and are grown with LOVE and TENDERNESS. It is where examples speak louder than words, and where thanksgiving happens more than once a year. Thank you God for agriculture and the life of farming. 
+           </div><!-- /.blog-post -->
+
+         
+
+        </div><!-- /.blog-main -->
+
+        <aside class="col-md-4 blog-sidebar">
+          <div class="p-3 mb-3 bg-light rounded">
+            <h5 class="font-italic">Thank you for using Springdell</h5>
+            <p class="mb-0">We dedicate this open source project to our farmers around the world.</p>
+          </div>
+        </aside><!-- /.blog-sidebar -->
+
+      </div>
+    </div>
