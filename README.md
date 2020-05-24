@@ -1,2 +1,2 @@
-# SpringdellProduction
-A compiled and published version of Springdell - BuildNext World
+# Springdell Middleware Application - Production Version
+Compiled and published version of Springdell - BuildNextWorld
