@@ -5,3 +5,5 @@ Springdell is an expiremental and learning project. We are currently working on 
 Learn more about Springdell at https://www.buildnextworld.com/springdell <br>
 Read Documentation at https://www.buildnextworld.com/springdell/docs/welcome <br>
 (Coming Soon) Reach to us if you encounter an issue https://www.buildnextworld.com/springdell/help-center 
+
+© 2020 Copyright BuildNextWorld 
