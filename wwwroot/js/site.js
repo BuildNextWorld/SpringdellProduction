@@ -70,9 +70,10 @@ var editor = {
                     processData: false,
                     async: true,
                     success: function (data) {
-                        alert(data)
+                        popup("Message",data)
                     },
                     error: function (xhr, ajaxOptions, thrownErro) {
+                        popup("Error", "Got an error-->"+thrownErro)
                     }
                 });
 
@@ -94,9 +95,10 @@ var editor = {
                 processData: false,
                 async: true,
                 success: function (data) {
-                    alert(data)
+                    popup("Message", data);
                 },
                 error: function (xhr, ajaxOptions, thrownErro) {
+                    popup("Error", "Got an error-->" + thrownErro);
                 }
             });
 
@@ -186,6 +188,7 @@ function _pre() {
 }
 function _run() {
     var b = document.getElementsByTagName("body")[0];
+    $('[id=tempPopup]').remove();
     $("[pb-autosubmit]").each(function () {
         $(this).unbind();
         $(this).off();
@@ -214,16 +217,62 @@ function _run() {
         $(this).unbind();
         $(this).off();
     });
+    $("[data-auto]").each(function () {
+        $(this).unbind();
+        $(this).off();
+    });
     $("[data-value]").each(function () {
         $(this).val($(this).attr("data-value"));
     });
-    $("a").each(function () {
-        var IsAjax = (($(this).attr("pb-url") != null && $(this).attr("pb-url") != "") || ($(this).attr("href") == "#") || ($(this).attr("href") == null) || ($(this).attr("no-load") == "1") );
-        $(this).click(function () { 
-            if (!IsAjax) {
-                $("#preload").fadeIn();
-               }
+
+    $("[data-auto]").each(function () {
+        var ___ = '';
+        var urihd = $(this).attr("href");
+        $(this).click(function (e) {
+            e.preventDefault();
+            pre();
+            $.ajax({
+                beforeSend: function () {
+                    $("#_centeralpoint").append("");
+                },
+                cache: false,
+                url: urihd,
+                global: true,
+                type: 'GET',
+                async: true,
+                success: function (data) {
+                    window.scrollTo(0, 0); 
+                    ___ = data;
+                    var _x = document.createElement("html");
+                    _x.innerHTML = ___;
+                    try {
+                        $("#_centeralpoint").html(_x.querySelectorAll('[id=_centeralpoint]')[0].innerHTML);
+                        _run();
+                        post();
+                    }
+                    catch (e) {
+                        console.log(e);
+                        try {
+                            $("#standard-target").html(_x.innerHTML);
+                            _run();
+                            post();
+                        }
+                        catch (ex) {
+                            console.log(ex);
+                        }
+                    }
+                    history.pushState(null, null, urihd);
+                    post();
+                },
+                error: function (request, status, error) {
+                    console.log(status);
+                    message(error);
+                    post();
+                }
+            });
         });
+
+
     });
     $("[id=func-editor]").each(function () {
         var data = $(this).find("code").text().trim();
@@ -357,7 +406,7 @@ function _run() {
                     _run();
                 }
             }).fail(function (jqXHR, textStatus, errorThrown) {
-                alert(textStatus + "..." + errorThrown);
+                popup("Error",textStatus + "..." + errorThrown);
             });
         }
     });
@@ -376,6 +425,10 @@ function _singleton() {
         }
     });
     var b = document.getElementsByTagName("body")[0];
+    $("input").attr("placeholder", "Type here....");
+    $("textarea").attr("placeholder", "Type here....");
+    $("input").attr("autocomplete", "off");
+    $("textarea").attr("autocomplete", "off");
     b.querySelectorAll("[pb-load]").forEach(function (e, i) {
         if (e.id == null || e.id == "") {
             e.id = "pb-id-" + tokenGenerate(5);
@@ -484,17 +537,23 @@ function tokenGenerateComplex(length) {
     return b.join("");
 }
 function message(msg) {
-    alert(msg);
+    popup("Message",msg);
 }
 function ToUrl(url) {
     window.location.href = url;
 }
 
 function popup(header, body) {
-    var template = '<div id="tempPopup" class="wrapper"><div class="popupmessage" > <div class="popuphear" >' + header + '</div> <div class="popup-body" >' + body + '<br/><a id="popupclose" class="btn btn-sm btn-default">Close</a></div></div></div>'
+    $('[id=tempPopup]').remove();
+    var template = '<div id="tempPopup" class="wrapper"><div class="popupmessage" > <div class="popuphear" >' + header + '<a id="popupclose" class="btn btn-sm float-right btn-default btn-close"><i class="icofont-close-circled"></i></a></div> <div class="popup-body" >' + body + '</div></div></div>'
     $('body').append(template);
+    $("#tempPopup .popupmessage").addClass("showp");
     $('#popupclose').click(function () {
-        $('#tempPopup').remove();
+        $('[id=tempPopup]').fadeOut();
+        $('[id=tempPopup]').unbind();
+        $('[id=popupclose]').unbind();
+        $(this).attr("id", "expired");
+        $('[id=tempPopup]').attr("id", "expired");
     });
 }
 function createModal(header, body) {
@@ -503,7 +562,7 @@ function createModal(header, body) {
     $('body').append(template);
     $(".modal").show();
     $('#tempclose').click(function () {
-        $('.modal').remove();
+        $('.modal').fadeOut().remove();
     });
 }
 
@@ -530,6 +589,7 @@ function lostAndFound()
                 post();
             }
             catch (e) {
+                console.log(e);
                 try {
                     $("#standard-target").html(_x.innerHTML);          
                     _run();
@@ -550,8 +610,20 @@ function lostAndFound()
 function pre() {
     var html = '<div id="asyn" class="synchronize"><img src="/cdn/svg/synchronize.svg"  /></div>';
     $('body').append(html);
-
+    $("#asyn").addClass("open");
 }
 function post() {
-    $("#asyn").remove();
+    var i = 0;
+    var st = setInterval(function () {
+        i++;
+        if (i == 1) {
+            $("#asyn").removeClass("open").addClass("remove");
+
+        }
+        else if (i == 2) {
+            $("#asyn").remove();
+            clearInterval(st);
+        }
+    },1000)
+    
 }

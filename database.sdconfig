@@ -22,6 +22,9 @@ ALTER table `simple_crud_columns` ADD COLUMN blockparam tinyint(1);
 ALTER table `simple_crud_columns` ADD COLUMN encrypted tinyint(1);
 ALTER table `simple_crud_columns` ADD COLUMN send_encrypt tinyint(1);
 ALTER TABLE simple_crud_columns ADD column send_encrypt_type tinyint(1);
+alter table simple_crud_columns add column column_type varchar(150);
+alter table simple_crud_columns add column column_param longtext;
+alter table simple_crud_columns add column listing_column tinyint(2);
 
 ALTER TABLE `simple_crud_columns`
   ADD PRIMARY KEY (`id`);
@@ -51,7 +54,7 @@ ALTER table simple_crud_view ADD COLUMN content_type longtext;
 ALTER TABLE simple_crud_view ADD COLUMN is_table tinyint(1);	
 ALTER TABLE simple_crud_view add COLUMN secure_form tinyint(1);
 ALTER TABLE simple_crud_view add COLUMN secure_param int;
-
+ALTER TABLE simple_crud_view add column enable_data_manu tinyint(1);
 
 ALTER TABLE `simple_crud_view`
   ADD PRIMARY KEY (`id`);
@@ -244,6 +247,8 @@ INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, 
 (29, 'download', 'system', 5, 0, 0, NULL, NULL),
 (30, 'sitemap', 'system', 5, 0, 0, NULL, NULL),
 (31, 'captcha', 'system', 5, 0, 0, NULL, NULL);
+INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, `isconsoleapp`, `enableheadertoken`, `headertokenvalue`, `headertokenformula`) VALUES (NULL, 'data-manipulation', 'console-{name}', '1', '1', '0', NULL, NULL);
+
 
 
 

@@ -1,4 +1,3 @@
-﻿(function () { };);
 const connection = new signalR.HubConnectionBuilder()
     .withUrl("/appsockethub")
     .configureLogging(signalR.LogLevel.Information)
