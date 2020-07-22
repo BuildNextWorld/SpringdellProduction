@@ -247,7 +247,7 @@ INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, 
 (29, 'download', 'system', 5, 0, 0, NULL, NULL),
 (30, 'sitemap', 'system', 5, 0, 0, NULL, NULL),
 (31, 'captcha', 'system', 5, 0, 0, NULL, NULL);
-INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, `isconsoleapp`, `enableheadertoken`, `headertokenvalue`, `headertokenformula`) VALUES (NULL, 'data-manipulation', 'console-{name}', '1', '1', '0', NULL, NULL);
+INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, `isconsoleapp`, `enableheadertoken`, `headertokenvalue`, `headertokenformula`) VALUES (32, 'data-manipulation', 'console-{name}', '1', '1', '0', NULL, NULL);
 
 
 
