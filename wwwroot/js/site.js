@@ -224,7 +224,72 @@ function _run() {
     $("[data-value]").each(function () {
         $(this).val($(this).attr("data-value"));
     });
+    try {
+        $('[id=html_editor]').summernote({
+            tabsize: 2,
+            height: 600
+        });
+        var topnav = $("#topnav").height();
+        $('[id=html_editor_full]').each(function () {
+            var top = this;
+            $(this).summernote({
+                tabsize: 2,
+                height: window.innerHeight - topnav
+            });
 
+            $("#_save_file").unbind(); $("#_save_file").off();
+            $(document).bind('keydown', function (e) {
+                if (e.ctrlKey && (e.which == 83)) {
+                    e.preventDefault();
+                    var urls = $("#_save_file").attr("href");
+                    var fd = new FormData();
+                    fd.append("Content", $(top).val());
+                    $.ajax({
+                        url: urls,
+                        //headers: _http_h(),
+                        data: fd,
+                        global: true,
+                        type: "post",
+                        contentType: false,
+                        processData: false,
+                        async: true,
+                        success: function (data) {
+                            popup("Message", data)
+                        },
+                        error: function (xhr, ajaxOptions, thrownErro) {
+                            popup("Error", "Got an error-->" + thrownErro)
+                        }
+                    });
+
+                    return false;
+                }
+            });
+            $("#_save_file").click(function (e) {
+                e.preventDefault();
+                var urls = $(this).attr("href");
+                var fd = new FormData();
+                fd.append("Content", $(top).val());
+                $.ajax({
+                    url: urls,
+                    //headers: _http_h(),
+                    data: fd,
+                    global: true,
+                    type: "post",
+                    contentType: false,
+                    processData: false,
+                    async: true,
+                    success: function (data) {
+                        popup("Message", data);
+                    },
+                    error: function (xhr, ajaxOptions, thrownErro) {
+                        popup("Error", "Got an error-->" + thrownErro);
+                    }
+                });
+
+            });
+
+        });
+    } catch (e) { console.log("HTML EDITOR DISABLED"); }
     $("[data-auto]").each(function () {
         var ___ = '';
         var urihd = $(this).attr("href");
@@ -358,7 +423,6 @@ function _run() {
             $("#target_" + target).fadeIn();
         }
         $("#target_" + target).find("[id=close]").each(function () {
-            console.log("test");
             $(this).click(function () {
                 $("#target_" + target).fadeOut();
             });
