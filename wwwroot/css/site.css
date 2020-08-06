@@ -37,7 +37,7 @@ a {
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #1b6ec2sidebar
+    background-color: #1b6ec2
     border-color: #1861ac;
 }
 
@@ -514,7 +514,6 @@ html {
     -webkit-text-size-adjust: 100%;
 }
 
-}
 
     .form-control:focus {
         background: #fbfbfb !important;
