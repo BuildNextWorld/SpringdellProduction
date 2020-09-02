@@ -246,8 +246,10 @@ INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, 
 (28, 'negotiate', 'appsockethub', 6, 0, 0, NULL, NULL),
 (29, 'download', 'system', 5, 0, 0, NULL, NULL),
 (30, 'sitemap', 'system', 5, 0, 0, NULL, NULL),
-(31, 'captcha', 'system', 5, 0, 0, NULL, NULL);
-INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, `isconsoleapp`, `enableheadertoken`, `headertokenvalue`, `headertokenformula`) VALUES (32, 'data-manipulation', 'console-{name}', '1', '1', '0', NULL, NULL);
+(31, 'captcha', 'system', 5, 0, 0, NULL, NULL),
+(32, 'execute', 'apigateway', 3, 0, 0, NULL, NULL),
+(33, 'pay', 'system', 5, 0, 0, NULL, NULL);
+INSERT INTO `system_app_master` (`appid`, `appname`, `appurlpattern`, `areaid`, `isconsoleapp`, `enableheadertoken`, `headertokenvalue`, `headertokenformula`) VALUES (34, 'data-manipulation', 'console-{name}', '1', '1', '0', NULL, NULL);
 
 
 
@@ -356,6 +358,7 @@ CREATE TABLE `user_accounts` (
   `userpassword` longtext DEFAULT NULL,
   `userroleid` bigint(20) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
+  `freeze` datetime DEFAULT NULL,
   `is_deleted` tinyint(1) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -368,6 +371,8 @@ ALTER TABLE `user_accounts`
 
 ALTER TABLE `user_accounts`
   ADD CONSTRAINT `user_accounts_ibfk_1` FOREIGN KEY (`userroleid`) REFERENCES `[DB_PREFIX]_sd_app_master`.`user_roles` (`roleid`);
+
+ALTER TABLE user_accounts ADD COLUMN freeze_point tinyint(3);
 
 CREATE TABLE `login_module` (
   `id` bigint(20) NOT NULL,
@@ -382,3 +387,15 @@ ALTER TABLE `login_module`
 
 ALTER TABLE `login_module`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
+
+create table payment_transactions(
+	id bigint PRIMARY KEY AUTO_INCREMENT,
+    paypal_transaction_id varchar(250),
+    local_product_id varchar(250),
+    amount float,
+    currency varchar(3),
+    status longtext,
+    created datetime,
+    last_update datetime
+);
+ALTER TABLE payment_transactions add COLUMN user_id bigint;

@@ -185,6 +185,7 @@ document.onreadystatechange = function () {
 }
 function _pre() {
     $("#preload").fadeIn();
+    setContentEditableFix()
 }
 function _run() {
     var b = document.getElementsByTagName("body")[0];
@@ -229,18 +230,38 @@ function _run() {
             tabsize: 2,
             height: 600
         });
+    }
+    catch (e) {
+        console.log("SUMMBERNOT DIABLEDd");
+    }
+    try {
+       
         var topnav = $("#topnav").height();
         $('[id=html_editor_full]').each(function () {
             var top = this;
-            $(this).summernote({
-                tabsize: 2,
-                height: window.innerHeight - topnav
-            });
+            $('#editormode').on('keydown', function (event) {
+                
+                if (window.getSelection && event.which == 8) {
 
+                    var selection = window.getSelection();
+                    console.log(selection)
+                    if (selection.anchorOffset <= 0 || selection.focusOffset <= 0) {
+                        event.preventDefault();
+                    }
+                    else if (selection.anchorOffset == 1 || selection.focusOffset == 1) {
+                        event.preventDefault();
+                        selection.focusNode.parentElement.innerHTML = "";
+                    }
+
+                }
+            });
+            $("#editormode").keypress(function (e) { return e.which != 13; });
             $("#_save_file").unbind(); $("#_save_file").off();
             $(document).bind('keydown', function (e) {
+                
                 if (e.ctrlKey && (e.which == 83)) {
                     e.preventDefault();
+                    $(top).val($("#editormode").html());
                     var urls = $("#_save_file").attr("href");
                     var fd = new FormData();
                     fd.append("Content", $(top).val());
@@ -266,6 +287,7 @@ function _run() {
             });
             $("#_save_file").click(function (e) {
                 e.preventDefault();
+                $(top).val($("#editormode").html());
                 var urls = $(this).attr("href");
                 var fd = new FormData();
                 fd.append("Content", $(top).val());
@@ -289,7 +311,7 @@ function _run() {
             });
 
         });
-    } catch (e) { console.log("HTML EDITOR DISABLED"); }
+    } catch (e) { console.log("HTML EDITOR DISABLED - >" + e); }
     $("[data-auto]").each(function () {
         var ___ = '';
         var urihd = $(this).attr("href");
@@ -690,4 +712,23 @@ function post() {
         }
     },1000)
     
+}
+
+function setContentEditableFix() {
+    $('[contenteditable=true]').on('keydown', function (event) {
+        if (window.getSelection && event.which == 8) {
+
+            var selection = window.getSelection();
+            console.log(selection)
+            if (selection.anchorOffset <= 0 || selection.focusOffset <= 0) {
+                event.preventDefault();
+            }
+            else if (selection.anchorOffset == 1 || selection.focusOffset == 1) {
+                event.preventDefault();
+                selection.focusNode.parentElement.innerHTML = "";
+            }
+
+        }
+    });
+    $("[contenteditable=true]").keypress(function (e) { return e.which != 13; });
 }
